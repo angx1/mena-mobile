@@ -1,19 +1,19 @@
-import { View, Text, Alert } from "react-native";
+import { View } from "react-native";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { Session } from "@supabase/supabase-js";
-import { Link, useRouter } from "expo-router";
 import { Redirect } from "expo-router";
 
-import SignIn from "@/app/(auth)/sign-in";
 import Home from "@/app/(tabs)/home";
 
 export default function Index() {
   const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      setLoading(false);
     });
 
     supabase.auth.onAuthStateChange((_event, session) => {
@@ -21,13 +21,17 @@ export default function Index() {
     });
   }, []);
 
+  if (loading) {
+    return <View className="w-full" />;
+  }
+
+  if (!session || !session.user) {
+    return <Redirect href="/sign-in" />;
+  }
+
   return (
     <View className="w-full">
-      {session && session.user ? (
-        <Home key={session.user.id} session={session} />
-      ) : (
-        <SignIn />
-      )}
+      <Home key={session.user.id} session={session} />
     </View>
   );
 }

@@ -1,32 +1,31 @@
 import { supabase } from "@/lib/supabase";
 import { useState } from "react";
 import { Alert, Pressable, Text, TextInput, View } from "react-native";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
+import { signInAction } from "@/actions";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter();
 
   async function handleSignIn() {
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
-
-    if (error) Alert.alert(error.message);
+    const { error, success } = await signInAction({ email, password });
+    if (error) Alert.alert(error);
+    if (success) {
+      router.replace("/");
+    }
   }
 
   function handleSignUp() {
-    router.push("/sign-up");
+    router.navigate("/sign-up");
   }
 
   return (
-    <View className="flex items-center w-full">
+    <View className="flex items-center w-full mt-[200px]">
       <View className="w-[80%]">
         <Text className="mb-2">email</Text>
         <TextInput
-          className="p-4 border border-gray-300 rounded-md text-base w-full h-fit"
+          className="p-4 border border-gray-300 rounded-md text-base w-full h-fit bg-transparent"
           onChangeText={setEmail}
           value={email}
           placeholder="email@address.com"
@@ -49,12 +48,20 @@ export default function SignIn() {
         <Pressable
           className="border bg-black rounded-3xl items-center p-3 w-full"
           onPress={handleSignIn}
+          style={({ pressed }) => ({
+            opacity: pressed ? 0.7 : 1,
+            transform: [{ scale: pressed ? 0.98 : 1 }],
+          })}
         >
           <Text className="text-base text-white">Sign In</Text>
         </Pressable>
         <Pressable
           className="border rounded-3xl items-center p-3 w-full"
           onPress={handleSignUp}
+          style={({ pressed }) => ({
+            opacity: pressed ? 0.7 : 1,
+            transform: [{ scale: pressed ? 0.98 : 1 }],
+          })}
         >
           <Text className="text-base">Sign Up</Text>
         </Pressable>
