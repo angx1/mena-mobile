@@ -13,13 +13,13 @@ export default function Layout() {
       <Stack.Screen
         name="sign-in"
         options={{
-          animation: "slide_from_left",
+          animation: "ios_from_left",
         }}
       />
       <Stack.Screen
         name="sign-up"
         options={{
-          animation: "slide_from_right",
+          animation: "ios_from_right",
         }}
       />
     </Stack>

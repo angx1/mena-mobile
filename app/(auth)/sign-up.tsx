@@ -36,7 +36,7 @@ export default function SignUp() {
   }
 
   function handleSignIn() {
-    router.navigate("/sign-in");
+    router.replace("/sign-in");
   }
 
   return (
