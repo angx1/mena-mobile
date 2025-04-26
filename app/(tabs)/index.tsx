@@ -1,10 +1,9 @@
-import { View } from "react-native";
+import { View, Text, StyleSheet, ScrollView, StatusBar } from "react-native";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { Session } from "@supabase/supabase-js";
 import { Redirect } from "expo-router";
-
-import Home from "@/app/(tabs)/home";
+import React from "react";
 
 export default function Index() {
   const [session, setSession] = useState<Session | null>(null);
@@ -30,8 +29,12 @@ export default function Index() {
   }
 
   return (
-    <View className="w-full">
-      <Home key={session.user.id} session={session} />
+    <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View className="w-full flex-1 justify-center items-center">
+          <Text>Hello, {session.user.email}</Text>
+        </View>
+      </ScrollView>
     </View>
   );
 }
