@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, Pressable, Text, StyleSheet } from "react-native";
+import {
+  View,
+  Pressable,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, {
@@ -9,7 +15,11 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-export default function ActionBar() {
+interface ActionBarProps {
+  onActionsVisibleChange?: (isVisible: boolean) => void;
+}
+
+export default function ActionBar({ onActionsVisibleChange }: ActionBarProps) {
   const insets = useSafeAreaInsets();
   const [actionsVisible, setActionsVisible] = useState(false);
   const buttonWidth = useSharedValue("46%");
@@ -53,18 +63,26 @@ export default function ActionBar() {
   };
 
   const toggleActions = () => {
-    setActionsVisible(!actionsVisible);
+    const newVisibility = !actionsVisible;
+    setActionsVisible(newVisibility);
+
+    if (onActionsVisibleChange) {
+      onActionsVisibleChange(newVisibility);
+    }
+
     buttonWidth.value = withSpring(
       actionsVisible ? "46%" : "16%",
       springConfig
     );
-    buttonBgColor.value = withSpring(
+    buttonBgColor.value = withTiming(
       actionsVisible ? "rgb(0, 0, 0)" : "rgb(221, 221, 221)",
-      springConfig
+      {
+        duration: 200,
+      }
     );
     rotateIcon.value = withSpring(actionsVisible ? 0 : 45, springConfig);
 
-    if (!actionsVisible) {
+    if (newVisibility) {
       actionsOpacity.value = withTiming(1, { duration: 200 });
       tripTranslateY.value = withSpring(0, springConfig);
       noteTranslateY.value = withSpring(0, {
@@ -91,8 +109,9 @@ export default function ActionBar() {
     <>
       {actionsVisible && (
         <Pressable
-          style={[StyleSheet.absoluteFill, styles.backdrop]}
+          style={[styles.backdrop]}
           onPress={toggleActions}
+          pointerEvents={!actionsVisible ? "auto" : "none"}
         />
       )}
 
@@ -142,7 +161,7 @@ export default function ActionBar() {
           >
             <View className="flex-row items-center justify-between">
               {!actionsVisible && (
-                <Text className="text-white font-bold text-base ">Add</Text>
+                <Text className="text-white font-bold text-base">Add</Text>
               )}
               <Animated.View
                 style={iconAnimatedStyle}
@@ -160,7 +179,6 @@ export default function ActionBar() {
 
 const styles = StyleSheet.create({
   backdrop: {
-    backgroundColor: "transparent",
     zIndex: 1,
   },
   actionBarContainer: {

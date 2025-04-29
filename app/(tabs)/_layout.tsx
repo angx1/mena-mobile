@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { View, useWindowDimensions } from "react-native";
 import { TabView, SceneMap } from "react-native-tab-view";
-import { useRouter } from "expo-router"; // Import useRouter
+import { useRouter } from "expo-router";
 
-import ActionBar from "@/components/action-bar";
-import AssistanceTrigger from "@/components/assistance-trigger";
+// Importa el nuevo componente
+import BottomActions from "@/components/bottom-actions"; // Asegúrate que la ruta sea correcta
+
+// Ya no necesitas importar ActionBar y AssistanceTrigger directamente aquí
+// import ActionBar from "@/components/action-bar";
+// import AssistanceTrigger from "@/components/assistance-trigger";
 
 import IndexScreen from "./index";
 import TripsScreen from "./trips";
@@ -29,9 +33,11 @@ export default function Layout() {
 
   const renderTabBar = () => null;
 
-  const handleAssistancePress = () => {
-    router.navigate("/generations");
-  };
+  // Esta función ya no es necesaria aquí si AssistanceTrigger
+  // maneja su propia navegación o si se pasa como prop a BottomActions
+  // const handleAssistancePress = () => {
+  //   router.navigate("/generations");
+  // };
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FFF" }}>
@@ -45,8 +51,11 @@ export default function Layout() {
         style={{ flex: 1 }}
         swipeEnabled={true}
       />
-      <AssistanceTrigger />
-      <ActionBar />
+      {/* Usa el nuevo componente combinado */}
+      <BottomActions />
+      {/* Elimina los componentes individuales */}
+      {/* <ActionBar /> */}
+      {/* <AssistanceTrigger /> */}
     </View>
   );
 }
