@@ -27,7 +27,7 @@ export default function AssistantTrigger() {
   const handlePress = () => {
     setModalVisible(true);
     translateY.value = SCREEN_HEIGHT;
-    translateY.value = withSpring(0, { mass: 1, damping: 83, stiffness: 100 });
+    translateY.value = withSpring(0, { mass: 1, damping: 83, stiffness: 140 });
   };
 
   const closeModalJS = () => {

@@ -64,14 +64,22 @@ export default function TripsScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+      <View
+        style={{
+          marginTop: insets.top + 20,
+        }}
+        className="w-[90%] ml-10"
+      >
+        <Text className="text-5xl">Trips</Text>
+      </View>
       <ScrollView
         contentContainerStyle={{
-          paddingTop: insets.top + 16,
+          paddingTop: insets.top,
           paddingBottom: insets.bottom + 16,
           paddingHorizontal: 16,
         }}
       >
-        <View className="flex-row flex-wrap justify-between">
+        <View className="flex-row flex-wrap justify-center">
           {userTrips.length > 0 ? (
             userTrips.map((trip) => (
               <TripCard

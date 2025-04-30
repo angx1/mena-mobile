@@ -40,7 +40,7 @@ const TripCard: React.FC<TripCardProps> = ({ trip, onPress }) => {
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={onPress ? 0.7 : 1}
-      className="w-[48%] mb-4 p-3 border border-gray-200 rounded-xl bg-white"
+      className="w-[90%] mb-4 p-3 border border-gray-200 rounded-xl bg-white"
     >
       <Text className="font-semibold text-base mb-1">{trip.nombre}</Text>
       <Text className="text-sm text-gray-600 mb-2" numberOfLines={2}>
